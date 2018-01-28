@@ -17,7 +17,7 @@ def extract_features(data):
     data['brand'] = pd.Categorical.from_array(data.brand_name).codes
     data['description'] = pd.Categorical.from_array(data.item_description).codes
     data['len_description'] = data.apply(lambda row: len(row['item_description']), axis=1)
-    df = pd.concat([data.name, data.category, data.brand, data.shipping, data.item_condition_id, data.len_description], axis=1)
+    df = pd.concat([data.name, data.category, data.brand, data.shipping, data.item_condition_id, data.description, data.len_description], axis=1)
     return df
 
 
@@ -25,6 +25,8 @@ train_data = pd.read_csv('train.tsv', sep='\t', header=0)
 print(train_data)
 values = {'item_description': '', 'brand' :0}
 train_data = train_data.fillna(value=values)
+brands = train_data['brand_name'].unique()
+print(brands)
 
 #text = train_data['item_description']
 #vectorizer = HashingVectorizer()
@@ -45,7 +47,7 @@ print(train_data)
 
 train_pool = Pool(train_data, train_label)
 #model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.22, depth=9)
-model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.3, depth=9)
-
+model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.35, depth=10, use_best_model=True)
 model.fit(train_pool)
+model.save_model('catboost_mercari.mlmodel')
 
