@@ -16,7 +16,8 @@ def extract_features(data):
     data['category'] = pd.Categorical.from_array(data.category_name).codes
     data['brand'] = pd.Categorical.from_array(data.brand_name).codes
     data['description'] = pd.Categorical.from_array(data.item_description).codes
-    df = pd.concat([data.name, data.category, data.brand, data.shipping, data.item_condition_id, data.description], axis=1)
+    data['len_description'] = data.apply(lambda row: len(row['item_description']), axis=1)
+    df = pd.concat([data.name, data.category, data.brand, data.shipping, data.item_condition_id, data.len_description], axis=1)
     return df
 
 
