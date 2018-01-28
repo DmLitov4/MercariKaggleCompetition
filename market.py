@@ -43,6 +43,8 @@ train_data = extract_features(train_data)
 print(train_data)
 
 train_pool = Pool(train_data, train_label)
-model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.15)
+#model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.22, depth=9)
+model = CatBoostRegressor(iterations=1000, loss_function='RMSE', random_seed=21, learning_rate=0.3, depth=9)
+
 model.fit(train_pool)
 
